@@ -136,10 +136,11 @@ describe("GestureHandling", () => {
   beforeEach(() => {
     doc = setupDocumentMock();
     map = createMockMap();
-    // navigator.languages のモック
+    // navigator のモック（デフォルト: 英語、非 macOS）
     vi.stubGlobal("navigator", {
       languages: ["en"],
       language: "en",
+      platform: "Linux x86_64",
     });
   });
 
@@ -221,14 +222,15 @@ describe("GestureHandling", () => {
       expect(map.scrollZoom.disable).toHaveBeenCalled();
     });
 
-    it("enables scrollZoom when modifier key is held", () => {
+    it("enables scrollZoom when modifier key is held (default: ctrl on non-macOS)", () => {
       const ctrl = new GestureHandling();
       ctrl.onAdd(map as any);
 
       const preventDefault = vi.fn();
       map.container.dispatchEvent("wheel", {
-        altKey: true,
-        ctrlKey: false,
+        altKey: false,
+        ctrlKey: true,
+        metaKey: false,
         preventDefault,
       });
 
@@ -237,14 +239,15 @@ describe("GestureHandling", () => {
       expect(map.scrollZoom.enable).toHaveBeenCalled();
     });
 
-    it("uses ctrl modifier when configured", () => {
-      const ctrl = new GestureHandling({ modifierKey: "ctrl" });
+    it("uses alt modifier when configured", () => {
+      const ctrl = new GestureHandling({ modifierKey: "alt" });
       ctrl.onAdd(map as any);
 
       const preventDefault = vi.fn();
       map.container.dispatchEvent("wheel", {
-        altKey: false,
-        ctrlKey: true,
+        altKey: true,
+        ctrlKey: false,
+        metaKey: false,
         preventDefault,
       });
 
@@ -294,11 +297,12 @@ describe("GestureHandling", () => {
       );
       expect(helpEl).toBeDefined();
 
-      // オーバーレイ上で modifier 付き wheel
+      // オーバーレイ上で modifier 付き wheel（デフォルト: ctrlKey on non-macOS）
       const preventDefault = vi.fn();
       (helpEl as MockElement).dispatchEvent("wheel", {
-        altKey: true,
-        ctrlKey: false,
+        altKey: false,
+        ctrlKey: true,
+        metaKey: false,
         preventDefault,
       });
 
@@ -461,7 +465,7 @@ describe("GestureHandling", () => {
         (c) => c.style.zIndex === "9999",
       );
       const textBox = helpEl?.firstElementChild;
-      expect(textBox?.innerText).toContain("Alt");
+      expect(textBox?.innerText).toContain("Ctrl");
       expect(textBox?.innerText).toContain("スクロール");
     });
 
@@ -469,6 +473,7 @@ describe("GestureHandling", () => {
       vi.stubGlobal("navigator", {
         languages: ["ja-JP"],
         language: "ja-JP",
+        platform: "Linux x86_64",
       });
 
       const ctrl = new GestureHandling();
@@ -501,7 +506,7 @@ describe("GestureHandling", () => {
         (c) => c.style.zIndex === "9999",
       );
       const textBox = helpEl?.firstElementChild;
-      expect(textBox?.innerText).toContain("alt");
+      expect(textBox?.innerText).toContain("Ctrl");
       expect(textBox?.innerText).toContain("scroll");
     });
 
@@ -509,6 +514,7 @@ describe("GestureHandling", () => {
       vi.stubGlobal("navigator", {
         languages: [],
         language: "ja",
+        platform: "Linux x86_64",
       });
 
       const ctrl = new GestureHandling();
@@ -531,6 +537,7 @@ describe("GestureHandling", () => {
       vi.stubGlobal("navigator", {
         languages: ["ja"],
         language: "ja",
+        platform: "Linux x86_64",
       });
 
       const ctrl = new GestureHandling();
@@ -581,7 +588,7 @@ describe("GestureHandling", () => {
       expect(textBox?.innerText).toContain("Ctrl");
     });
 
-    it("shows ctrl in message when modifierKey is ctrl", () => {
+    it("shows Ctrl in message when modifierKey is ctrl", () => {
       const ctrl = new GestureHandling({ modifierKey: "ctrl" });
       ctrl.onAdd(map as any);
 
@@ -595,7 +602,163 @@ describe("GestureHandling", () => {
         (c) => c.style.zIndex === "9999",
       );
       const textBox = helpEl?.firstElementChild;
-      expect(textBox?.innerText).toContain("ctrl");
+      expect(textBox?.innerText).toContain("Ctrl");
+    });
+  });
+
+  describe("macOS auto-detection", () => {
+    it("uses metaKey (⌘) by default on macOS", () => {
+      vi.stubGlobal("navigator", {
+        languages: ["en"],
+        language: "en",
+        platform: "MacIntel",
+      });
+
+      const ctrl = new GestureHandling();
+      ctrl.onAdd(map as any);
+
+      // metaKey で scrollZoom が有効になる
+      const preventDefault = vi.fn();
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: true,
+        preventDefault,
+      });
+
+      expect(preventDefault).toHaveBeenCalled();
+      expect(map.scrollZoom.enable).toHaveBeenCalled();
+    });
+
+    it("shows ⌘ in English message on macOS", () => {
+      vi.stubGlobal("navigator", {
+        languages: ["en"],
+        language: "en",
+        platform: "MacIntel",
+      });
+
+      const ctrl = new GestureHandling();
+      ctrl.onAdd(map as any);
+
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: vi.fn(),
+      });
+
+      const helpEl = map.container.children.find(
+        (c) => c.style.zIndex === "9999",
+      );
+      const textBox = helpEl?.firstElementChild;
+      expect(textBox?.innerText).toContain("⌘");
+      expect(textBox?.innerText).toContain("scroll");
+    });
+
+    it("shows ⌘ in Japanese message on macOS", () => {
+      vi.stubGlobal("navigator", {
+        languages: ["ja"],
+        language: "ja",
+        platform: "MacIntel",
+      });
+
+      const ctrl = new GestureHandling();
+      ctrl.onAdd(map as any);
+
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: vi.fn(),
+      });
+
+      const helpEl = map.container.children.find(
+        (c) => c.style.zIndex === "9999",
+      );
+      const textBox = helpEl?.firstElementChild;
+      expect(textBox?.innerText).toContain("⌘");
+      expect(textBox?.innerText).toContain("スクロール");
+    });
+
+    it("uses ctrlKey by default on non-macOS", () => {
+      vi.stubGlobal("navigator", {
+        languages: ["en"],
+        language: "en",
+        platform: "Win32",
+      });
+
+      const ctrl = new GestureHandling();
+      ctrl.onAdd(map as any);
+
+      const preventDefault = vi.fn();
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: true,
+        metaKey: false,
+        preventDefault,
+      });
+
+      expect(preventDefault).toHaveBeenCalled();
+      expect(map.scrollZoom.enable).toHaveBeenCalled();
+    });
+
+    it("detects macOS via userAgentData", () => {
+      vi.stubGlobal("navigator", {
+        languages: ["en"],
+        language: "en",
+        platform: "something",
+        userAgentData: { platform: "macOS" },
+      });
+
+      const ctrl = new GestureHandling();
+      ctrl.onAdd(map as any);
+
+      const preventDefault = vi.fn();
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: true,
+        preventDefault,
+      });
+
+      expect(preventDefault).toHaveBeenCalled();
+      expect(map.scrollZoom.enable).toHaveBeenCalled();
+    });
+  });
+
+  describe("meta modifier key", () => {
+    it("uses metaKey when modifierKey is meta", () => {
+      const ctrl = new GestureHandling({ modifierKey: "meta" });
+      ctrl.onAdd(map as any);
+
+      const preventDefault = vi.fn();
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: true,
+        preventDefault,
+      });
+
+      expect(preventDefault).toHaveBeenCalled();
+      expect(map.scrollZoom.enable).toHaveBeenCalled();
+    });
+
+    it("shows ⌘ in message when modifierKey is meta", () => {
+      const ctrl = new GestureHandling({ modifierKey: "meta" });
+      ctrl.onAdd(map as any);
+
+      map.container.dispatchEvent("wheel", {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: vi.fn(),
+      });
+
+      const helpEl = map.container.children.find(
+        (c) => c.style.zIndex === "9999",
+      );
+      const textBox = helpEl?.firstElementChild;
+      expect(textBox?.innerText).toContain("⌘");
     });
   });
 
@@ -608,8 +771,9 @@ describe("GestureHandling", () => {
 
       const preventDefault = vi.fn();
       map.container.dispatchEvent("wheel", {
-        altKey: true,
-        ctrlKey: false,
+        altKey: false,
+        ctrlKey: true,
+        metaKey: false,
         preventDefault,
       });
 

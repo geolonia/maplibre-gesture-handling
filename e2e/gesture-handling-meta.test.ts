@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const PAGE = "/e2e/gesture-handling-ja.html";
+const PAGE = "/e2e/gesture-handling-meta.html";
 
 async function initMap(page: import("@playwright/test").Page) {
   await page.goto(PAGE, { waitUntil: "load" });
@@ -9,7 +9,7 @@ async function initMap(page: import("@playwright/test").Page) {
   });
 }
 
-test.describe("GestureHandling E2E — Japanese", () => {
+test.describe("GestureHandling E2E — meta modifier", () => {
   test("control initializes successfully", async ({ page }) => {
     await initMap(page);
 
@@ -20,7 +20,9 @@ test.describe("GestureHandling E2E — Japanese", () => {
     expect(result.ok, result.error).toBe(true);
   });
 
-  test("help overlay shows Japanese message on wheel", async ({ page }) => {
+  test("help overlay shows ⌘ message on wheel without modifier", async ({
+    page,
+  }) => {
     await initMap(page);
 
     const mapEl = page.locator("#map");
@@ -30,8 +32,7 @@ test.describe("GestureHandling E2E — Japanese", () => {
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();
-    const isMac = await page.evaluate(() => /mac/i.test(navigator.platform));
-    expect(text).toContain(isMac ? "⌘" : "Ctrl");
-    expect(text).toContain("スクロール");
+    expect(text).toContain("⌘");
+    expect(text).toContain("scroll");
   });
 });

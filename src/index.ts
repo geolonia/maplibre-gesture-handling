@@ -5,15 +5,30 @@ function detectLang(): "ja" | "en" {
   return lang === "ja" || lang === "ja-jp" ? "ja" : "en";
 }
 
-type ModifierKey = "altKey" | "ctrlKey";
+function detectMacOS(): boolean {
+  // biome-ignore lint/complexity/useLiteralKeys: userAgentData is not in TS lib types
+  const uad = (navigator as any)["userAgentData"];
+  if (uad?.platform) {
+    return uad.platform === "macOS";
+  }
+  return /mac/i.test(navigator.platform);
+}
+
+type ModifierKey = "altKey" | "ctrlKey" | "metaKey";
+
+const KEY_LABELS: Record<ModifierKey, { en: string; ja: string }> = {
+  altKey: { en: "alt", ja: "Alt" },
+  ctrlKey: { en: "Ctrl", ja: "Ctrl" },
+  metaKey: { en: "⌘", ja: "⌘" },
+};
 
 const MESSAGES = {
   en: (key: ModifierKey) => ({
-    wheel: `Use ${key === "altKey" ? "alt" : "ctrl"} + scroll to zoom the map.`,
+    wheel: `Use ${KEY_LABELS[key].en} + scroll to zoom the map.`,
     touch: "Use two fingers to move the map.",
   }),
   ja: (key: ModifierKey) => ({
-    wheel: `${key === "altKey" ? "Alt" : "Ctrl"} キーを押しながらスクロールしてください。`,
+    wheel: `${KEY_LABELS[key].ja} キーを押しながらスクロールしてください。`,
     touch: "2本指を使って操作してください。",
   }),
 } as const;
@@ -29,8 +44,8 @@ export interface GestureHandlingOptions {
   textMessageMobile?: string;
   /** メッセージ表示のタイムアウト（ms、デフォルト: 2000） */
   timeout?: number;
-  /** 修飾キー指定: "alt" | "ctrl"（デフォルト: "alt"） */
-  modifierKey?: "alt" | "ctrl";
+  /** 修飾キー指定（デフォルト: "auto"）。"auto" は macOS で ⌘、それ以外で Ctrl */
+  modifierKey?: "auto" | "alt" | "ctrl" | "meta";
   /** 言語: "ja" | "en" | "auto"（デフォルト: "auto"） */
   lang?: "ja" | "en" | "auto";
 }
@@ -44,9 +59,24 @@ interface ResolvedSettings {
   modifierKey: ModifierKey;
 }
 
+function resolveModifierKey(
+  option: GestureHandlingOptions["modifierKey"],
+): ModifierKey {
+  switch (option) {
+    case "alt":
+      return "altKey";
+    case "ctrl":
+      return "ctrlKey";
+    case "meta":
+      return "metaKey";
+    default:
+      // "auto" or undefined
+      return detectMacOS() ? "metaKey" : "ctrlKey";
+  }
+}
+
 function resolveSettings(options: GestureHandlingOptions): ResolvedSettings {
-  const modifierKey: ModifierKey =
-    options.modifierKey === "ctrl" ? "ctrlKey" : "altKey";
+  const modifierKey = resolveModifierKey(options.modifierKey);
   const lang =
     options.lang === "auto" || !options.lang ? detectLang() : options.lang;
   const messages = MESSAGES[lang](modifierKey);

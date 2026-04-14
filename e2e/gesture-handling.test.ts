@@ -39,7 +39,9 @@ test.describe("GestureHandling E2E — default", () => {
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();
-    expect(text).toContain("alt");
+    // auto-detect: macOS shows ⌘, others show Ctrl
+    const isMac = await page.evaluate(() => /mac/i.test(navigator.platform));
+    expect(text).toContain(isMac ? "⌘" : "Ctrl");
     expect(text).toContain("scroll");
   });
 

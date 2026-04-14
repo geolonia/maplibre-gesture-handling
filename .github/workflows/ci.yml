@@ -67,8 +67,34 @@ jobs:
           path: test-results/
           retention-days: 7
 
+  e2e-macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - project: chromium
+            engine: chromium
+          - project: webkit
+            engine: webkit
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps ${{ matrix.engine }}
+      - run: npx playwright test --project=${{ matrix.project }}
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: e2e-results-macos-${{ matrix.project }}
+          path: test-results/
+          retention-days: 7
+
   publish:
-    needs: [lint, test, e2e]
+    needs: [lint, test, e2e, e2e-macos]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
