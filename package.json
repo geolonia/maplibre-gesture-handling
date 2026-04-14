@@ -17,6 +17,10 @@
     "e2e": "playwright test",
     "prepublishOnly": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geolonia/maplibre-gesture-handling.git"
+  },
   "author": "Geolonia Inc.",
   "license": "MIT",
   "peerDependencies": {
