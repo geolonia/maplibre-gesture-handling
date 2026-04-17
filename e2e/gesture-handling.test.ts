@@ -35,7 +35,7 @@ test.describe("GestureHandling E2E — default", () => {
     const mapEl = page.locator("#map");
     await mapEl.dispatchEvent("wheel", { deltaY: 100 });
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .gesture-handling-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();
@@ -51,7 +51,7 @@ test.describe("GestureHandling E2E — default", () => {
     const mapEl = page.locator("#map");
     await mapEl.dispatchEvent("wheel", { deltaY: 100 });
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .gesture-handling-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     // デフォルトタイムアウトは2000ms
@@ -79,7 +79,7 @@ test.describe("GestureHandling E2E — default", () => {
     const mapEl = page.locator("#map");
     await mapEl.dispatchEvent("wheel", { deltaY: 100 });
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .gesture-handling-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     // コントロールを削除

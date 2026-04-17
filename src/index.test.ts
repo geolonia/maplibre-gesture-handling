@@ -215,7 +215,7 @@ describe("GestureHandling", () => {
 
       // ヘルプ要素がコンテナに追加されている
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
       expect(helpEl?.style.display).toBe("flex");
@@ -268,7 +268,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
 
@@ -293,7 +293,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
 
@@ -324,7 +324,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
 
@@ -358,7 +358,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
       expect(map.dragPan.disable).toHaveBeenCalled();
@@ -373,7 +373,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeUndefined();
     });
@@ -411,7 +411,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
 
@@ -462,7 +462,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("Ctrl");
@@ -486,7 +486,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("スクロール");
@@ -503,7 +503,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("Ctrl");
@@ -527,7 +527,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("スクロール");
@@ -550,7 +550,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("スクロール");
@@ -565,7 +565,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("2本指");
@@ -582,7 +582,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("Ctrl");
@@ -599,7 +599,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("Ctrl");
@@ -648,7 +648,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("⌘");
@@ -673,7 +673,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("⌘");
@@ -755,7 +755,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toContain("⌘");
@@ -817,7 +817,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
 
@@ -847,7 +847,7 @@ describe("GestureHandling", () => {
       map.emit("movestart", {});
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeUndefined();
     });
@@ -861,7 +861,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeUndefined();
     });
@@ -881,7 +881,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeUndefined();
     });
@@ -912,7 +912,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl).toBeDefined();
     });
@@ -933,7 +933,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       const textBox = helpEl?.firstElementChild;
       expect(textBox?.innerText).toBe("Custom wheel msg");
@@ -953,7 +953,7 @@ describe("GestureHandling", () => {
       });
 
       const helpEl = map.container.children.find(
-        (c) => c.style.zIndex === "9999",
+        (c) => c.className === "gesture-handling-help-overlay",
       );
       expect(helpEl?.style.backgroundColor).toBe("red");
       const textBox = helpEl?.firstElementChild;
