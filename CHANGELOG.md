@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.0.0
+## v3.0.0 - 2026-04-17
 
 ### Breaking Changes
 
@@ -15,7 +15,7 @@
 - macOS E2E tests on GitHub Actions (`macos-latest`).
 - Type-safe error handling in E2E fixture pages.
 
-## v2.0.0
+## v2.0.0 - 2026-04-14
 
 - Initial release as a TypeScript rewrite of [`@geolonia/mbgl-gesture-handling`](https://github.com/geolonia/mbgl-gesture-handling) for MapLibre GL JS.
 - Implements `IControl` interface from MapLibre GL JS.
