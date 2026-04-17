@@ -30,7 +30,8 @@ test.describe("GestureHandling E2E — English", () => {
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();
-    expect(text).toContain("alt");
+    const isMac = await page.evaluate(() => /mac/i.test(navigator.platform));
+    expect(text).toContain(isMac ? "⌘" : "Ctrl");
     expect(text).toContain("scroll");
   });
 });

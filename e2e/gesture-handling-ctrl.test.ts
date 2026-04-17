@@ -32,7 +32,7 @@ test.describe("GestureHandling E2E — ctrl modifier", () => {
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();
-    expect(text).toContain("ctrl");
+    expect(text).toContain("Ctrl");
     expect(text).toContain("scroll");
   });
 });
