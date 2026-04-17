@@ -119,7 +119,7 @@ export class GestureHandling implements IControl {
 
     // ヘルプオーバーレイの作成
     const helpElement = document.createElement("div");
-    helpElement.className = "maplibregl-gesture-help-overlay";
+    helpElement.className = "gesture-handling-help-overlay";
     helpElement.style.backgroundColor = this.settings.backgroundColor;
     helpElement.style.position = "absolute";
     helpElement.style.display = "none";
