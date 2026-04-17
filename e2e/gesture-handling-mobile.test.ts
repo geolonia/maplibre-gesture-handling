@@ -41,7 +41,7 @@ test.describe("GestureHandling E2E — Mobile touch", () => {
 
     await fireSingleFingerMoveStart(page);
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .maplibregl-gesture-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();
@@ -53,7 +53,7 @@ test.describe("GestureHandling E2E — Mobile touch", () => {
 
     await fireSingleFingerMoveStart(page);
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .maplibregl-gesture-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     // デフォルトタイムアウト 2000ms 後に消える
@@ -66,7 +66,7 @@ test.describe("GestureHandling E2E — Mobile touch", () => {
     // まずオーバーレイを表示
     await fireSingleFingerMoveStart(page);
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .maplibregl-gesture-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     // オーバーレイ上で2本指タッチをシミュレート
@@ -76,7 +76,7 @@ test.describe("GestureHandling E2E — Mobile touch", () => {
       const mapContainer = document.getElementById("map");
       if (!mapContainer) return;
       const helpEl = mapContainer.querySelector<HTMLElement>(
-        "div[style*='z-index']",
+        ".maplibregl-gesture-help-overlay",
       );
       if (!helpEl) return;
 

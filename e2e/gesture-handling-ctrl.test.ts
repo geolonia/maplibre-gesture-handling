@@ -28,7 +28,7 @@ test.describe("GestureHandling E2E — ctrl modifier", () => {
     const mapEl = page.locator("#map");
     await mapEl.dispatchEvent("wheel", { deltaY: 100 });
 
-    const overlay = page.locator("#map div[style*='z-index']");
+    const overlay = page.locator("#map .maplibregl-gesture-help-overlay");
     await expect(overlay).toBeVisible({ timeout: 5000 });
 
     const text = await overlay.locator("div").innerText();

@@ -30,7 +30,7 @@
 
         window.__e2e = { ok: true, map, ctrl };
       } catch (e) {
-        window.__e2e = { ok: false, error: e.message };
+        window.__e2e = { ok: false, error: e instanceof Error ? e.message : String(e) };
       }
     </script>
   </body>
