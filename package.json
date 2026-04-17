@@ -1,6 +1,6 @@
 {
   "name": "@geolonia/maplibre-gesture-handling",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "This is a MapLibre GL JS plugin that handles wheel and touch gestures to prevent unexpected zooming and moving for the map embeded in your web site.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
